@@ -1,8 +1,12 @@
+/* ==========================================
+   1. GLOBAL RESET & BASE STYLES
+   ========================================== */
 :root {
   --color-lightest: #fff4e6;
   --color-light: #ffe8cc;
   --color-medium: #ffa94d;
   --color-dark: #ff922b;
+  --color-darkest: #e67e22;
 }
 
 * {
@@ -11,160 +15,207 @@
   box-sizing: border-box;
 }
 
-html {
-  font-size: 62.5%;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
 body {
-  height: 100vh;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
   color: #495057;
+  background-color: #f8f9fa;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
 }
 
+/* ==========================================
+   2. MAIN APPLICATION CONTAINER (SIDE-BY-SIDE GRID)
+   ========================================== */
 .app {
-  min-height: 66vh;
+  width: 100%;
+  max-width: 900px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+
+  /* Creates the split screen layout */
   display: grid;
-  grid-template-columns: 34rem 44rem;
-  column-gap: 4rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
   align-items: start;
 }
 
-.button {
-  background-color: var(--color-medium);
-  color: #343a40;
-  padding: 0.8rem 1.2rem;
-  border: none;
-  border-radius: 7px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
 }
 
-.button:hover {
-  background-color: var(--color-dark);
+/* ==========================================
+   3. SIDEBAR & FRIENDS LIST LAYOUT
+   ========================================== */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .sidebar ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  font-size: 1.4rem;
-  margin-bottom: 2rem;
+  gap: 8px;
 }
 
+/* Individual Friend Row */
 .sidebar li {
   display: grid;
-  grid-template-columns: 4.8rem 1fr auto;
+  grid-template-columns: 48px 1fr auto;
   align-items: center;
-  column-gap: 1.6rem;
-
-  padding: 1.2rem;
-  border-radius: 7px;
-  transition: 0.5s;
+  column-gap: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
-.selected,
 .sidebar li:hover {
+  background-color: var(--color-lightest);
+}
+
+/* Active Highlight State */
+.sidebar li.selected {
   background-color: var(--color-lightest);
 }
 
 .sidebar li img {
   border-radius: 50%;
   width: 100%;
-  grid-row: span 2;
 }
 
 .sidebar li h3 {
-  grid-row: 1;
   grid-column: 2;
+  font-size: 1.1rem;
+  color: #343a40;
 }
 
 .sidebar li p {
-  grid-row: 2;
   grid-column: 2;
-}
-
-.sidebar li .button {
-  grid-row: span 2;
-  grid-column: 3;
-}
-
-.sidebar > .button {
-  float: right;
-  margin-right: 1.2rem;
-}
-
-.green {
-  color: #66a80f;
-}
-
-.red {
-  color: #e03131;
-}
-
-form {
-  font-size: 1.6rem;
-  display: grid;
-  align-items: center;
-  gap: 1.2rem;
-
-  background-color: var(--color-lightest);
-  border-radius: 7px;
-}
-
-.form-add-friend {
-  grid-template-columns: 1fr 1.5fr;
-  margin-bottom: 1.6rem;
-  padding: 1.2rem;
-}
-.form-split-bill {
-  grid-template-columns: 1fr 12rem;
-  padding: 3.2rem 4rem;
-}
-
-label {
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
-label::first-letter {
-  display: inline-block;
-  margin-right: 2px;
-  font-size: 1.8rem;
+/* Balance Text Color Coding */
+.sidebar li p.red {
+  color: #e03131;
 }
 
-input,
-select {
-  font-family: inherit;
-  color: inherit;
-  font-size: 1.5rem;
-  padding: 0.7rem;
-  text-align: center;
-  border: 1px solid var(--color-light);
-  border-radius: 4px;
-  transition: 0.3s;
+.sidebar li p.green {
+  color: #0ca678;
 }
 
-input:focus,
-select:focus {
-  outline: none;
-  border: 1px solid var(--color-dark);
+.sidebar li .button {
+  grid-column: 3;
 }
 
-form .button {
-  margin-top: 0.6rem;
+/* ==========================================
+   4. SHARED REUSABLE COMPONENTS
+   ========================================== */
+.button {
+  background-color: var(--color-dark);
+  color: #343a40;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: var(--color-darkest);
+}
+
+/* Sidebar Toggle Adjustments */
+.sidebar > .button {
+  align-self: flex-end;
+  margin-top: 4px;
+}
+
+/* ==========================================
+   5. FORM COMPONENT STRUCTURES
+   ========================================== */
+form {
+  background-color: var(--color-lightest);
+  padding: 24px;
+  border-radius: 8px;
+  display: grid;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Left Sidebar Dropdown Form Layout */
+.form-add-friend {
+  grid-template-columns: 1fr 1.5fr;
+}
+
+.form-add-friend .button {
   grid-column: 2;
+  margin-top: 4px;
 }
 
-form h2 {
+/* Right Detail Panel Form Layout */
+.form-split-bill {
+  grid-template-columns: 1.2fr 1fr;
+  background-color: #fff9db; /* Distinguishing warm background */
+}
+
+.form-split-bill h2 {
   grid-column: 1 / -1;
-  font-size: 2.2rem;
+  font-size: 1.4rem;
   text-transform: uppercase;
   letter-spacing: -0.5px;
-  margin-bottom: 1.6rem;
+  margin-bottom: 8px;
+  color: #343a40;
+}
+
+.form-split-bill .button {
+  grid-column: 2;
+  margin-top: 12px;
+}
+
+/* ==========================================
+   6. INPUT FIELD TYPOGRAPHY
+   ========================================== */
+form label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+form input,
+form select {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 6px 10px;
+  border: 1px solid var(--color-light);
+  border-radius: 4px;
+  color: inherit;
+  outline: none;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+form input:focus,
+form select:focus {
+  border-color: var(--color-medium);
+  box-shadow: 0 0 0 3px rgba(255, 146, 43, 0.2);
+}
+
+/* Style for disabled auto-calculated input fields */
+form input:disabled {
+  background-color: #f1f3f5;
+  border-color: #e9ecef;
+  color: #adb5bd;
+  cursor: not-allowed;
 }
